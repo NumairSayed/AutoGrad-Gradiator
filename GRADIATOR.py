@@ -193,6 +193,15 @@ class Quant:
         
         out._backward = _backward
         return out
+    def log(self):
+        out = Quant(data=math.log(self.data), _children=(self,), _op='log')
+        
+        def _backward():
+            self.grad += (1.0 / self.data) * out.grad
+            
+        out._backward = _backward
+        return out
+
     
     def backward(self,):
         # Routine for topo-sort of nodes
